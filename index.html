@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<!--LOADER-START-->
+<script>
+(function () {
+  function g(a) {
+    return fetch('boot.js' + (a > 1 ? ('?r=' + a + Date.now()) : ''), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.text(); });
+  }
+  function go(a) {
+    g(a).then(function (t) {
+      var s = document.createElement('script');
+      s.textContent = t;
+      (document.head || document.documentElement).appendChild(s);
+    }, function () {
+      if (a < 5) { go(a + 1); return; }
+      var b = document.getElementById('boot');
+      if (b) b.textContent = 'Не удалось загрузить игру. Нажмите F5.';
+    });
+  }
+  go(1);
+})();
+</script>
+<!--LOADER-END-->
+<title>NEON RUPTURE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%2305070c'/%3E%3Ccircle%20cx='16'%20cy='16'%20r='11'%20fill='none'%20stroke='%231c2a3a'%20stroke-width='2'/%3E%3Cpath%20d='M26%2016%209%2025.5%2012.5%2016%209%206.5Z'%20fill='%237ef9ff'/%3E%3Cpath%20d='M23.5%2016%2014.5%2019%2016%2016%2014.5%2013Z'%20fill='%23eaf6ff'/%3E%3C/svg%3E">
+
+<style>.hidden{display:none}</style>
+<link rel="stylesheet" href="css/style.css?v=BB6DFA1C">
+</head>
+<body>
+<!--MARKUP-START-->
+<div id="boot" style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:#05070c;color:#7ef9ff;font:16px/1.5 'Segoe UI',system-ui,sans-serif;text-align:center;padding:24px;z-index:99999">Загрузка…</div>
+
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div class="stat" id="tl"><span>Очки</span><b id="scoreVal">0</b></div>
+  <div class="stat" id="tl2"><span>Волна</span><b id="waveVal">1</b></div>
+  <div class="stat" id="tr">
+    <span>Рекорд</span><b id="bestVal">0</b>
+    <div id="accnt">Ур. <b id="lvlVal">1</b> · <b id="ptVal">0</b> очк.</div>
+    <div id="diffHud">сложность: оператор</div>
+    <div id="mute">&#128266; звук: вкл</div>
+  </div>
+  <div id="combo"></div>
+
+  <div id="bossbar">
+    <div class="bn" id="bossName">СТРАЖ СЕТИ</div>
+    <div id="bosstrack"><i id="bossfill"></i></div>
+  </div>
+
+  <div class="bottom">
+    <div class="hpwrap">
+      <div class="lbl"><span>Прочность</span><span id="hpText">100</span></div>
+      <div id="hpbar"><i id="hpfill"></i></div>
+    </div>
+    <div id="powers"></div>
+  </div>
+
+  <div class="dashwrap ready" id="dashwrap">
+    <div class="lbl"><span>Рывок <b class="key">SPACE</b></span><span id="dashText">готов</span></div>
+    <div id="dashbar"><i id="dashfill"></i></div>
+  </div>
+
+  <div id="weapons"></div>
+</div>
+
+<div id="overlay">
+  <div id="ovTitle">NEON RUPTURE</div>
+  <div id="ovSub">
+    Ты — последний контур в заражённой сети. Держись как можно дольше.<br>
+    Каждая <b>5-я волна</b> — <b>БОСС</b> (иногда сразу <b>пара</b>). На <b>3-й, 8-й, 13-й…</b> выходит <b>ХИМЕРА</b> — мини-босс, который берёт пять приёмов других боссов.<br><br>
+    <b>Движение</b> <span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span>
+    &nbsp;·&nbsp; <b>Прицел</b> мышь &nbsp;·&nbsp; <b>Огонь</b> ЛКМ (удерживай) &nbsp;·&nbsp; <b>Рывок</b> <span class="k">Space</span><br>
+    <b>Оружие</b> <span class="k">1</span><span class="k">2</span><span class="k">3</span><span class="k">4</span> / <span class="k">Q</span><span class="k">E</span> или колесо
+    &nbsp;·&nbsp; <b>Пауза</b> <span class="k">P</span> &nbsp;·&nbsp; <b>Звук</b> <span class="k">M</span>
+  </div>
+
+  <div id="diffs"></div>
+  <div id="diffInfo"></div>
+
+  <div id="soundBox">
+    <span class="sndlbl">Звук</span>
+    <input id="volRange" type="range" min="0" max="100" step="5" value="100" aria-label="Громкость">
+    <span id="volVal">громкость 100%</span>
+    <button id="muteBtn" class="sndbtn" type="button" title="Выключить звук" aria-pressed="false"><span class="sb-ico">&#128266;</span><span class="sb-txt">ЗВУК ВКЛ</span></button>
+    <span class="sndlbl">Оружие</span>
+    <button id="autoWBtn" class="sndbtn" type="button" title="Автопереключение при подборе патронов" aria-pressed="true"><span class="sb-ico">&#8646;</span><span class="sb-txt">АВТОСМЕНА ВКЛ</span></button>
+  </div>
+
+  <div class="legend">
+    <i style="color:#7ee787">+35 HP</i>
+    <i style="color:#ffd166">Скорострел / Дробовик</i>
+    <i style="color:#c77dff">Тройной / Лазер</i>
+    <i style="color:#7ef9ff">Щит</i>
+    <i style="color:#ff8a5c">Ракеты</i>
+  </div>
+
+  <div class="row">
+    <button id="ovBtn">ИГРАТЬ</button>
+    <button id="metaBtn">ПРОКАЧКА</button>
+    <button id="boardBtn">ЛИДЕРЫ</button>
+    <button id="acctBtn" class="guest">ВОЙТИ</button>
+  </div>
+
+  <div class="row subrow">
+    <button id="bestBtn" class="ghostbtn">БЕСТИАРИЙ</button>
+    <button id="logBtn" class="ghostbtn">ЖУРНАЛ ОБНОВЛЕНИЙ</button>
+  </div>
+
+  <div id="sync" class="hidden"></div>
+  <div class="small" id="ovHint">Очки за забег идут в постоянную прокачку контура</div>
+  <div class="small" id="ovCopy">© 2026 NEON RUPTURE · tricksterlub · все права защищены. Копирование и перекодировка проекта без разрешения запрещены.</div>
+</div>
+
+<div id="meta" class="hidden">
+  <div class="metaIn">
+    <div id="metaTop">
+      <div id="metaTitle">ПРОКАЧКА КОНТУРА</div>
+      <div id="metaPts"></div>
+      <div class="tabs" id="metaTabs">
+        <button id="tabLinear" class="on">ЛИНЕЙНАЯ</button>
+        <button id="tabTree">ДЕРЕВО НАВЫКОВ</button>
+      </div>
+    </div>
+    <div id="upgList"></div>
+    <div id="treeList" class="hidden"></div>
+    <button id="metaBack" class="back">НАЗАД</button>
+  </div>
+</div>
+
+<div id="auth" class="hidden">
+  <div class="panelTitle">АККАУНТ</div>
+
+  <div id="authLoggedOut">
+    <div class="tabs">
+      <button id="tabLogin" class="on">ВХОД</button>
+      <button id="tabReg">РЕГИСТРАЦИЯ</button>
+    </div>
+    <div class="form">
+      <input id="authEmail" type="email" placeholder="email" autocomplete="email">
+      <input id="authPass" type="password" placeholder="пароль" autocomplete="current-password">
+      <div id="nickRow" class="hidden">
+        <input id="nickField" type="text" placeholder="ник для лидеров" maxlength="16" autocomplete="nickname">
+      </div>
+      <button id="authDo" class="primary">ВОЙТИ</button>
+      <div id="authMsg" class="ok"></div>
+    </div>
+
+    <div id="oauthRow" class="hidden">
+      <div class="orsep">или войти через</div>
+      <div class="oauthBtns">
+        <button id="oauthGoogle">GOOGLE</button>
+        <button id="oauthGithub">GITHUB</button>
+      </div>
+    </div>
+
+    <div class="form">
+      <button id="diagBtn" class="ghost">ПРОВЕРИТЬ СВЯЗЬ С СЕРВЕРОМ</button>
+      <div id="diagOut"></div>
+    </div>
+  </div>
+
+  <div id="authLoggedIn" class="hidden">
+    <div class="who">Вошёл как <b id="authWho"></b></div>
+    <div class="form">
+      <div id="nickRowEdit">
+        <input id="nickEdit" type="text" placeholder="ник для лидеров" maxlength="16" autocomplete="nickname">
+      </div>
+      <button id="nickSave" class="primary">СОХРАНИТЬ НИК</button>
+      <div id="syncInfo" class="syncInfo"></div>
+      <button id="syncBtn" class="ghost">СИНХРОНИЗИРОВАТЬ СЕЙЧАС</button>
+      <div id="authMsg2"></div>
+      <button id="authOut" class="danger">ВЫЙТИ ИЗ АККАУНТА</button>
+    </div>
+  </div>
+
+  <button id="authBack" class="back">НАЗАД</button>
+</div>
+
+<div id="board" class="hidden">
+  <div class="panelTitle">ТАБЛИЦА ЛИДЕРОВ</div>
+  <div id="boardTabs"></div>
+  <div id="boardList"></div>
+  <div id="boardMsg" class="ok"></div>
+  <button id="boardBack" class="back">НАЗАД</button>
+</div>
+
+<div id="log" class="hidden">
+  <div class="panelTitle">ЖУРНАЛ СЕТИ</div>
+  <div class="panelSub">Хроника обновлений контура</div>
+  <div id="logList"></div>
+  <div class="panelFoot">
+    <button id="logNavBest" class="ghostbtn">БЕСТИАРИЙ</button>
+    <button id="logBack" class="back">НАЗАД</button>
+  </div>
+</div>
+
+<div id="best" class="hidden">
+  <div class="panelTitle">БЕСТИАРИЙ</div>
+  <div class="panelSub" id="bestSub">Каталог заражённых сущностей сети</div>
+  <div class="tabs" id="bestTabs">
+    <button id="tabMobs" class="on">ЗАРАЖЁННЫЕ</button>
+    <button id="tabBosses">БОССЫ</button>
+    <button id="tabSkills">СПОСОБНОСТИ</button>
+  </div>
+  <div id="bestList"></div>
+  <div class="panelFoot">
+    <button id="bestNavLog" class="ghostbtn">ЖУРНАЛ ОБНОВЛЕНИЙ</button>
+    <button id="bestBack" class="back">НАЗАД</button>
+  </div>
+</div>
+
+
+<!--MARKUP-END-->
+<script>window.__NEON_TAIL = 1;</script>
+</body>
+</html>
