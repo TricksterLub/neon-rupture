@@ -584,6 +584,14 @@ html, body {
 }
 .bcard:hover { transform: translateY(-3px); box-shadow: 0 0 32px -14px var(--c); }
 .bcard.big { grid-column: 1 / -1; }
+.bcard.locked { filter: grayscale(0.85) brightness(0.72); border-top-color: #2a3746; }
+.bcard.locked:hover { filter: grayscale(0.6) brightness(0.85); }
+.bcard.locked .bname { color: #6b7f96; text-shadow: none; }
+.bcard.locked .thumb { opacity: 0.35; }
+.bcard.tier1 { border-top-color: #4a5a6c; }
+.bcard.tier2 { border-top-color: var(--c); }
+.bcard.tier3 { box-shadow: 0 0 46px -18px var(--c); }
+.bcard .btip b { color: #ffd166; }
 .thumb {
   flex: 0 0 auto; width: 84px; height: 84px; border-radius: 10px;
   background: rgba(4,7,12,.75); border: 1px solid #1b2734;
