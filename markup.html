@@ -32,71 +32,118 @@
     <div id="dashbar"><i id="dashfill"></i></div>
   </div>
 
+  <div class="ragewrap cooling" id="ragewrap" title="Ярость: клик или F — ультимейт">
+    <div class="lbl"><span>Ярость <b class="key">F</b> · <b id="rageName">УЛЬТА</b></span><span id="rageText">0%</span></div>
+    <div id="ragebar"><i id="ragefill"></i></div>
+  </div>
+
   <div id="weapons"></div>
 </div>
 
 <div id="overlay">
   <div id="ovTitle">NEON RUPTURE</div>
-  <div id="ovSub">
-    Ты — последний контур в заражённой сети. Держись как можно дольше.<br>
-    Каждая <b>5-я волна</b> — <b>БОСС</b> (иногда сразу <b>пара</b>). На <b>3-й, 8-й, 13-й…</b> выходит <b>ХИМЕРА</b> — мини-босс, который берёт пять приёмов других боссов.<br><br>
-    <b>Движение</b> <span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span>
-    &nbsp;·&nbsp; <b>Прицел</b> мышь &nbsp;·&nbsp; <b>Огонь</b> ЛКМ (удерживай) &nbsp;·&nbsp; <b>Рывок</b> <span class="k">Space</span><br>
-    <b>Оружие</b> <span class="k">1</span><span class="k">2</span><span class="k">3</span><span class="k">4</span> / <span class="k">Q</span><span class="k">E</span> или колесо
-    &nbsp;·&nbsp; <b>Пауза</b> <span class="k">P</span> &nbsp;·&nbsp; <b>Звук</b> <span class="k">M</span>
+
+  <nav id="hubNav">
+    <button class="hubtab on" data-tab="main">ГЛАВНОЕ</button>
+    <button class="hubtab" data-tab="upg">ПРОКАЧКА</button>
+    <button class="hubtab" data-tab="char">КОНТУР</button>
+    <button class="hubtab" data-tab="set">НАСТРОЙКИ</button>
+    <button class="hubtab" data-tab="hud">ПОЛЕ (HUD)</button>
+    <button class="hubtab" data-tab="death">СМЕРТЬ</button>
+    <button class="hubtab" data-tab="skin">КАСТОМИЗАЦИЯ</button>
+  </nav>
+
+  <div id="hubBody">
+    <section class="hubSec" data-sec="main">
+      <div id="mainIntro">
+        Ты — последний контур в заражённой сети. Держись как можно дольше.<br>
+        Каждая <b>5-я волна</b> — <b>БОСС</b> (иногда сразу <b>пара</b>). На <b>3-й, 8-й, 13-й…</b> выходит <b>ХИМЕРА</b> — мини-босс, который берёт пять приёмов других боссов.<br><br>
+        <b>Движение</b> <span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span>
+        &nbsp;·&nbsp; <b>Прицел</b> мышь &nbsp;·&nbsp; <b>Огонь</b> ЛКМ (удерживай) &nbsp;·&nbsp; <b>Рывок</b> <span class="k">Space</span> &nbsp;·&nbsp; <b>Ульта</b> <span class="k">F</span><br>
+        <b>Оружие</b> <span class="k">1</span><span class="k">2</span><span class="k">3</span><span class="k">4</span> / <span class="k">Q</span><span class="k">E</span> или колесо
+        &nbsp;·&nbsp; <b>Пауза</b> <span class="k">P</span> &nbsp;·&nbsp; <b>Звук</b> <span class="k">M</span>
+      </div>
+
+      <div id="diffs"></div>
+      <div id="diffInfo"></div>
+
+      <div class="row">
+        <button id="playBtn">ИГРАТЬ</button>
+        <button id="boardBtn">ЛИДЕРЫ</button>
+        <button id="acctBtn" class="guest">ВОЙТИ</button>
+      </div>
+
+      <div class="row subrow">
+        <button id="bestBtn" class="ghostbtn">БЕСТИАРИЙ</button>
+        <button id="logBtn" class="ghostbtn">ЖУРНАЛ ОБНОВЛЕНИЙ</button>
+      </div>
+
+      <div class="legend">
+        <i style="color:#7ee787">+35 HP</i>
+        <i style="color:#ffd166">Скорострел / Дробовик</i>
+        <i style="color:#c77dff">Тройной / Лазер</i>
+        <i style="color:#7ef9ff">Щит</i>
+        <i style="color:#ff8a5c">Ракеты</i>
+      </div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="upg">
+      <div id="upgTop">
+        <div id="metaPts"></div>
+        <div class="tabs" id="metaTabs">
+          <button id="tabLinear" class="on">ЛИНЕЙНАЯ</button>
+          <button id="tabTree">ДЕРЕВО НАВЫКОВ</button>
+        </div>
+      </div>
+      <div id="upgList"></div>
+      <div id="treeList" class="hidden"></div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="char">
+      <div class="secHint">Выбери контур. У каждого — своя механика, свой ультимейт (<b class="key">F</b>) и свой набор скинов.</div>
+      <div id="charGrid" class="charGrid"></div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="set">
+      <div class="secHint">Звук и поведение в бою. Изменения применяются сразу.</div>
+      <div id="soundBox">
+        <span class="sndlbl">Эффекты</span>
+        <input id="volRange" type="range" min="0" max="100" step="5" value="100" aria-label="Громкость эффектов">
+        <span id="volVal">эффекты 100%</span>
+        <button id="muteBtn" class="sndbtn" type="button" title="Выключить звук" aria-pressed="false"><span class="sb-ico">&#128266;</span><span class="sb-txt">ЗВУК ВКЛ</span></button>
+        <span class="sndlbl">Музыка</span>
+        <input id="volMusRange" type="range" min="0" max="100" step="5" value="80" aria-label="Громкость музыки">
+        <span id="volMusVal">музыка 80%</span>
+        <span class="sndlbl">Оружие</span>
+        <button id="autoWBtn" class="sndbtn" type="button" title="Автопереключение при подборе патронов" aria-pressed="true"><span class="sb-ico">&#8646;</span><span class="sb-txt">АВТОСМЕНА ВКЛ</span></button>
+      </div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="hud">
+      <div class="secHint">Что показывать в бою. Настройки сохраняются.</div>
+      <div id="hudToggles" class="togGrid"></div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="death">
+      <div class="secHint">Что показывать на экране смерти после проигрыша.</div>
+      <div id="deathToggles" class="togGrid"></div>
+    </section>
+
+    <section class="hubSec hidden" data-sec="skin">
+      <div class="secHint">Скины контура <b id="skinCharName">СТРАЖ</b>. Открываются за очки прокачки и уровень; базовый доступен сразу. У каждого контура свой набор.</div>
+      <div id="skinGrid" class="skinGrid"></div>
+    </section>
   </div>
 
-  <div id="diffs"></div>
-  <div id="diffInfo"></div>
-
-  <div id="soundBox">
-    <span class="sndlbl">Звук</span>
-    <input id="volRange" type="range" min="0" max="100" step="5" value="100" aria-label="Громкость">
-    <span id="volVal">громкость 100%</span>
-    <button id="muteBtn" class="sndbtn" type="button" title="Выключить звук" aria-pressed="false"><span class="sb-ico">&#128266;</span><span class="sb-txt">ЗВУК ВКЛ</span></button>
-    <span class="sndlbl">Оружие</span>
-    <button id="autoWBtn" class="sndbtn" type="button" title="Автопереключение при подборе патронов" aria-pressed="true"><span class="sb-ico">&#8646;</span><span class="sb-txt">АВТОСМЕНА ВКЛ</span></button>
-  </div>
-
-  <div class="legend">
-    <i style="color:#7ee787">+35 HP</i>
-    <i style="color:#ffd166">Скорострел / Дробовик</i>
-    <i style="color:#c77dff">Тройной / Лазер</i>
-    <i style="color:#7ef9ff">Щит</i>
-    <i style="color:#ff8a5c">Ракеты</i>
-  </div>
-
-  <div class="row">
+  <div id="ovSub"></div>
+  <div class="row" id="ovActions" style="display:none">
     <button id="ovBtn">ИГРАТЬ</button>
-    <button id="metaBtn">ПРОКАЧКА</button>
-    <button id="boardBtn">ЛИДЕРЫ</button>
-    <button id="acctBtn" class="guest">ВОЙТИ</button>
-  </div>
-
-  <div class="row subrow">
-    <button id="bestBtn" class="ghostbtn">БЕСТИАРИЙ</button>
-    <button id="logBtn" class="ghostbtn">ЖУРНАЛ ОБНОВЛЕНИЙ</button>
+    <button id="ovMenuBtn" class="ghostbtn">В МЕНЮ</button>
   </div>
 
   <div id="sync" class="hidden"></div>
   <div class="small" id="ovHint">Очки за забег идут в постоянную прокачку контура</div>
   <div class="small" id="ovCopy">© 2026 NEON RUPTURE · tricksterlub · все права защищены. Копирование и перекодировка проекта без разрешения запрещены.</div>
-</div>
-
-<div id="meta" class="hidden">
-  <div class="metaIn">
-    <div id="metaTop">
-      <div id="metaTitle">ПРОКАЧКА КОНТУРА</div>
-      <div id="metaPts"></div>
-      <div class="tabs" id="metaTabs">
-        <button id="tabLinear" class="on">ЛИНЕЙНАЯ</button>
-        <button id="tabTree">ДЕРЕВО НАВЫКОВ</button>
-      </div>
-    </div>
-    <div id="upgList"></div>
-    <div id="treeList" class="hidden"></div>
-    <button id="metaBack" class="back">НАЗАД</button>
-  </div>
 </div>
 
 <div id="auth" class="hidden">

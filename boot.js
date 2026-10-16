@@ -11,7 +11,7 @@ window.__NEON_OBF=true;
     'src/utils.js', 'src/core.js', 'src/config.js', 'src/state.js', 'src/difficulty.js', 'src/meta.js',
     'src/config.cloud.js', 'src/cloud.js', 'src/account.js',
     'src/audio.js', 'src/effects.js', 'src/projectiles.js', 'src/player.js', 'src/enemies.js',
-    'src/bosses.js', 'src/waves.js', 'src/draw.js', 'src/hud.js', 'src/bestiary.js', 'src/input.js', 'src/game.js'
+    'src/bosses.js', 'src/waves.js', 'src/draw.js', 'src/hud.js', 'src/wprog.js', 'src/chars.js', 'src/menu.js', 'src/bestiary.js', 'src/input.js', 'src/game.js'
   ];
   var MARKUP = 'markup.html';
   var CSS_HREF = 'css/style.css';
