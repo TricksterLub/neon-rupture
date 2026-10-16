@@ -644,6 +644,13 @@ html, body {
 .abdesc { font-size: 11.5px; line-height: 1.5; color: #b9cadd; }
 .abtip { margin-top: 6px; padding-left: 8px; font-size: 11px; line-height: 1.45; color: #93a7bd; border-left: 2px solid #22303f; }
 .abtip b { font-size: 9.5px; letter-spacing: 1.2px; color: #7ef9ff; }
+.abcard.locked { opacity: .82; box-shadow: none; }
+.abcard.locked .abname { color: #5c7089; text-shadow: none; }
+.abcard.locked .abkind { color: #46586c; }
+.abcard.locked .abdesc { color: #7d8fa4; }
+.abcard.locked .abtip { color: #6b7f95; }
+.abcard.locked .abtip b { color: #5c7089; }
+.abchip.unknown { color: #5c7089; border-color: #2a3a4b; }
 .abset {
   grid-column: 1 / -1; display: flex; flex-direction: column; gap: 9px; text-align: left;
   padding: 12px; border-radius: 14px;
