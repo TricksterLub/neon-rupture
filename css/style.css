@@ -39,6 +39,23 @@ html, body {
  
 @keyframes comboBlink { 0%, 100% { opacity: 1; } 50% { opacity: .12; } }
 #combo.warn { animation: comboBlink .4s linear infinite; }
+#hunt {
+  position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
+  width: 210px; text-align: center;
+  opacity: 0; transition: opacity .25s ease;
+}
+#hunt.on { opacity: 1; }
+#hunt span {
+  display: block; font-size: 10.5px; letter-spacing: 3px; font-weight: 700;
+  color: #ff8fa3; text-transform: uppercase; margin-bottom: 4px;
+  text-shadow: 0 0 14px rgba(255,61,110,.7);
+}
+#hunt i {
+  display: block; height: 4px; width: 0; border-radius: 4px;
+  background: linear-gradient(90deg, #ff3d6e, #ffd166);
+  box-shadow: 0 0 14px rgba(255,61,110,.6);
+  transition: width .1s linear;
+}
 
  
 #bossbar {
@@ -747,6 +764,7 @@ html, body {
 #hud.h-off-wave #tl2,
 #hud.h-off-best #tr,
 #hud.h-off-combo #combo,
+#hud.h-off-hunt #hunt,
 #hud.h-off-boss #bossbar,
 #hud.h-off-hp .bottom .hpwrap,
 #hud.h-off-powers #powers,
